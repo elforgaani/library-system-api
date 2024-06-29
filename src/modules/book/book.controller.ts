@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Book from "../../database/models/book.model";
 import Author from "../../database/models/author.model";
 import { pagination } from "../../utils/pagination.utils";
-import { Meta } from "../../../types/meta";
+import { Meta } from "../../types/meta";
 import { isHex } from "../../utils/schemas.utils";
 
 export const addBook = async (
