@@ -22,3 +22,8 @@ export const addAuthorRequestBodyValidationSchema = yup.object({
     .array(yup.string().matches(hexDecOnlyRegExp).nullable())
     .nullable(),
 });
+
+export const isHex = (value: string): boolean => {
+  const hexDecOnlyRegEx = /^[0-9A-Fa-f]+$/;
+  return hexDecOnlyRegEx.test(value) ?? false;
+};
