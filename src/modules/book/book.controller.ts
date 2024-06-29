@@ -3,6 +3,7 @@ import Book from "../../database/models/book.model";
 import Author from "../../database/models/author.model";
 import { pagination } from "../../utils/pagination.utils";
 import { Meta } from "../../../types/meta";
+import { isHex } from "../../utils/schemas.utils";
 
 export const addBook = async (
   req: Request,
@@ -52,6 +53,28 @@ export const getAllBooks = async (
     res.status(200).json({ success: true, meta, date: books });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: "Internal Sever Error" });
+  }
+};
+
+export const getBookById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+  const isValidId: boolean = isHex(id);
+  if (!isValidId) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Book id is not valid" });
+  }
+  try {
+    const book = await Book.findById(id).populate([
+      { path: "author", select: "_id name" },
+    ]);
+    res.status(200).json({ success: true, data: book });
+  } catch (error) {
     res.status(500).json({ success: false, message: "Internal Sever Error" });
   }
 };
