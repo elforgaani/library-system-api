@@ -8,5 +8,5 @@ router.post(
   addBookRequestInputValidationMiddelware,
   BookController.addBook
 );
-
+router.get("/", BookController.getAllBooks);
 export default router;
