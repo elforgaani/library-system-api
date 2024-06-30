@@ -37,14 +37,14 @@ export const getAllBooks = async (
   res: Response,
   next: NextFunction
 ) => {
-  let { page = 1, limit = 1 } = req.query;
-  const pageNumber = Number(page);
-  const limitResults = Number(limit)
+  let { page = 1, limit = 6 } = req.query;
+  const pageNumber = Math.max(Number(page), 1);  // Ensure page is at least 1
+  const limitResults = Math.max(Number(limit), 1);
   try {
     const count = await Book.countDocuments();
     const meta: Meta = {
       page: pageNumber,
-      pages: Math.ceil(count / 6),
+      pages: Math.ceil(count / limitResults),
     };
     const books = await Book.find(
       {},
