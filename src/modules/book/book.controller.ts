@@ -91,13 +91,31 @@ export const updateBook = async (req: Request, res: Response, next: NextFunction
   try {
     const author = await Author.findById(authorId);
     if (!author) {
-      return res.status(400).json({ success: false, message: "Author Does not Exist" });
+      return res.status(404).json({ success: false, message: "Author Does not Exist" });
     }
     const book = await Book.findByIdAndUpdate(id, { title, content, author: authorId, publishedDate }, { new: true }).populate([{ path: "author", select: "name" }]);
     if (!book) {
       return res.status(400).json({ success: false, message: "Book Does not Exist" });
     }
     res.status(200).json({ success: true, message: "Book Updated Successfully", data: book });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal Sever Error" });
+  }
+}
+
+
+export const deleteBook = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const isValidId = isHex(id);
+  if (!isValidId) {
+    return res.status(400).json({ success: false, message: "Book id is not valid" });
+  }
+  try {
+    const book = await Book.findByIdAndDelete(id);
+    if (!book) {
+      return res.status(404).json({ success: false, message: "Book is Not Exist" });
+    }
+    res.status(200).json({ success: true, message: "Book Deleted Successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: "Internal Sever Error" });
   }
