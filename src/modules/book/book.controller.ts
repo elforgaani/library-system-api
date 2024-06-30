@@ -37,8 +37,9 @@ export const getAllBooks = async (
   res: Response,
   next: NextFunction
 ) => {
-  let { page = 1 } = req.query;
+  let { page = 1, limit = 1 } = req.query;
   const pageNumber = Number(page);
+  const limitResults = Number(limit)
   try {
     const count = await Book.countDocuments();
     const meta: Meta = {
@@ -48,7 +49,7 @@ export const getAllBooks = async (
     const books = await Book.find(
       {},
       { __v: 0 },
-      pagination(pageNumber)
+      pagination(pageNumber, limitResults)
     ).populate([{ path: "author", select: "_id name " }]);
     res.status(200).json({ success: true, meta, date: books });
   } catch (error) {
