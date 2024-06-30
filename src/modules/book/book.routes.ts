@@ -10,4 +10,5 @@ router.post(
 );
 router.get("/", BookController.getAllBooks);
 router.get("/:id", BookController.getBookById);
+router.put('/:id', BookController.updateBook);
 export default router;
