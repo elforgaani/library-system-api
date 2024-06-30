@@ -64,3 +64,20 @@ export const updateAuthor = async (req: Request, res: Response, next: NextFuncti
     res.status(500).json({ success: false, message: "Internal Sever Error" });
   }
 }
+
+export const deleteAuthor = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const isValidId = isHex(id);
+  if (!isValidId) {
+    return res.status(400).json({ success: false, message: "Author id is not valid" });
+  }
+  try {
+    const result = await Author.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Author Does not Exist" });
+    }
+    res.status(200).json({ success: true, message: "Author Deleted Successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal Sever Error" });
+  }
+}

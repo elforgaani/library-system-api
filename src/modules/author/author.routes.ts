@@ -7,5 +7,6 @@ router.post("/", addAuthorRequestInputValidationMiddleware, AuthorController.add
 router.get('/', AuthorController.getAllAuthors);
 router.get('/:id', AuthorController.getAuthorById);
 router.put('/:id', AuthorController.updateAuthor);
+router.delete("/:id", AuthorController.deleteAuthor);
 
 export default router;
