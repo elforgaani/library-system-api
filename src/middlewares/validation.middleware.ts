@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { addBookRequestBodyValidationSchema } from "../utils/schemas.utils";
+import { addAuthorRequestBodyValidationSchema, addBookRequestBodyValidationSchema } from "../utils/schemas.utils";
 
 export const addBookRequestInputValidationMiddelware: RequestHandler = (
   req: Request,
@@ -9,7 +9,7 @@ export const addBookRequestInputValidationMiddelware: RequestHandler = (
   const { title, content, author, publishedDate } = req.body;
   const book = { title, content, author, publishedDate };
   try {
- 
+
     addBookRequestBodyValidationSchema.validateSync(book);
     req.book = book;
     next();
@@ -22,3 +22,23 @@ export const addBookRequestInputValidationMiddelware: RequestHandler = (
     });
   }
 };
+
+export const addAuthorRequestInputValidationMiddleware: RequestHandler = (req: Request, res: Response, next: NextFunction) => {
+  const { name, bio, birthDate, books } = req.body;
+
+  const author = { name, bio, birthDate, books };
+  console.log(author);
+
+  try {
+    addAuthorRequestBodyValidationSchema.validateSync(author)
+    req.author = author
+    next()
+  } catch (error: any) {
+    const { errors } = error;
+    res.status(400).json({
+      success: false,
+      message: "Error While Parsing Body",
+      errors: errors || "",
+    });
+  }
+}
