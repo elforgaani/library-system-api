@@ -48,3 +48,19 @@ export const getAuthorById = async (req: Request, res: Response, next: NextFunct
     res.status(500).json({ success: false, message: "Internal Sever Error" });
   }
 }
+
+export const updateAuthor = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const { name, bio, birthDate, books } = req.body
+
+  const isValidId = isHex(id);
+  if (!isValidId) {
+    return res.status(400).json({ success: false, message: "Author id is Invalid" });
+  }
+  try {
+    const result = await Author.findByIdAndUpdate(id, { name, bio, birthDate, books }, { new: true });
+    res.status(200).json({ success: true, message: "Author Updated Successfully", data: result });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal Sever Error" });
+  }
+}

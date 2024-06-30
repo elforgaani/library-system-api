@@ -6,6 +6,6 @@ const router = Router();
 router.post("/", addAuthorRequestInputValidationMiddleware, AuthorController.addAuthor);
 router.get('/', AuthorController.getAllAuthors);
 router.get('/:id', AuthorController.getAuthorById);
-// router.put('/:id', AuthorController.updateAuthor);
+router.put('/:id', AuthorController.updateAuthor);
 
 export default router;
