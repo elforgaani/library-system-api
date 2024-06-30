@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": " node ./dist/index.ts",
+    "build": "rm -rf ./dist && tsc",
+    "start": "node ./dist/index.ts",
     "dev": "nodemon ./src/index.ts"
   },
   "keywords": [],
