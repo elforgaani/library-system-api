@@ -9,7 +9,8 @@ export const addAuthor = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { author } = req;
+  const { name, bio, birthDate, books } = req.body;
+  const author = { name, bio, birthDate, books };
   const result = await Author.create(author);
   res.status(201).json({ success: true, message: "Author Added Successfully", data: result });
 
