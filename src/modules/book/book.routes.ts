@@ -1,12 +1,14 @@
 import { Router } from "express";
 import * as BookController from "./book.controller";
-import { addBookRequestInputValidationMiddelware } from "../../middlewares/validation.middleware";
-import { errorHandleMiddleware } from "../../utils/error-handler.middleware";
+import { addBookRequestInputValidationMiddelware, validationMiddleware } from "../../middlewares/validation.middleware";
+import { errorHandleMiddleware } from "../../middlewares/error-handler.middleware";
+import { addBookRequestBodyValidationSchema } from "../../utils/schemas.utils";
 const router = Router();
 
 router.post(
   "/",
-  addBookRequestInputValidationMiddelware,
+  // addBookRequestInputValidationMiddelware,
+  validationMiddleware(addBookRequestBodyValidationSchema),
   BookController.addBook
 );
 router.get("/", errorHandleMiddleware(BookController.getAllBooks));

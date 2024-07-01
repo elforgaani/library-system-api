@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as AuthorController from "./author.controller";
 import { addAuthorRequestInputValidationMiddleware } from "../../middlewares/validation.middleware";
-import { errorHandleMiddleware } from "../../utils/error-handler.middleware";
+import { errorHandleMiddleware } from "../../middlewares/error-handler.middleware";
 const router = Router();
 
 router.post("/", addAuthorRequestInputValidationMiddleware, errorHandleMiddleware(AuthorController.addAuthor));

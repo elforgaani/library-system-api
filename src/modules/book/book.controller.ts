@@ -10,8 +10,10 @@ export const addBook = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { book }: { book: any } = req;
-  const author = await Author.findById(book.author);
+  // const { book }: { book: any } = req;
+  const { title, content, author: authorId, publishedDate } = req.body;
+  const book = { title, content, author: authorId, publishedDate }
+  const author = await Author.findById(authorId);
   console.log(author);
 
   if (!author) {
@@ -34,7 +36,7 @@ export const getAllBooks = async (
   next: NextFunction
 ) => {
   let { page = 1, limit = 6 } = req.query;
-  const pageNumber = Math.max(Number(page), 1);  // Ensure page is at least 1
+  const pageNumber = Math.max(Number(page), 1);
   const limitResults = Math.max(Number(limit), 1);
 
   const count = await Book.countDocuments();
