@@ -10,29 +10,23 @@ export const addAuthor = async (
   next: NextFunction
 ) => {
   const { author } = req;
-  try {
-    const result = await Author.create(author);
-    res.status(201).json({ success: true, message: "Author Added Successfully", data: result });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Sever Error" });
-  }
+  const result = await Author.create(author);
+  res.status(201).json({ success: true, message: "Author Added Successfully", data: result });
+
 };
 
 export const getAllAuthors = async (req: Request, res: Response, next: NextFunction) => {
   let { page = 1, limit = 6 } = req.query;
   const pageNumber = Math.max(Number(page), 1);
   const limitResults = Math.max(Number(limit), 1);
-  try {
-    const count = await Author.countDocuments();
-    const meta: Meta = {
-      page: pageNumber,
-      pages: Math.ceil(count / limitResults)
-    }
-    const authors = await Author.find({}, { __v: 0 }, pagination(pageNumber, limitResults)).populate([{ path: "books", select: "_id title content" }])
-    res.status(200).json({ success: true, meta, data: authors });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Sever Error" });
+  const count = await Author.countDocuments();
+  const meta: Meta = {
+    page: pageNumber,
+    pages: Math.ceil(count / limitResults)
   }
+  const authors = await Author.find({}, { __v: 0 }, pagination(pageNumber, limitResults)).populate([{ path: "books", select: "_id title content" }])
+  res.status(200).json({ success: true, meta, data: authors });
+
 }
 
 export const getAuthorById = async (req: Request, res: Response, next: NextFunction) => {
@@ -41,12 +35,9 @@ export const getAuthorById = async (req: Request, res: Response, next: NextFunct
   if (!isValidId) {
     return res.status(400).json({ success: false, message: "Author id is not Valid" });
   }
-  try {
-    const author = await Author.findById(id, { __v: 0 });
-    res.status(200).json({ success: true, date: author });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Sever Error" });
-  }
+  const author = await Author.findById(id, { __v: 0 });
+  res.status(200).json({ success: true, date: author });
+
 }
 
 export const updateAuthor = async (req: Request, res: Response, next: NextFunction) => {
@@ -57,12 +48,9 @@ export const updateAuthor = async (req: Request, res: Response, next: NextFuncti
   if (!isValidId) {
     return res.status(400).json({ success: false, message: "Author id is Invalid" });
   }
-  try {
-    const result = await Author.findByIdAndUpdate(id, { name, bio, birthDate, books }, { new: true });
-    res.status(200).json({ success: true, message: "Author Updated Successfully", data: result });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Sever Error" });
-  }
+  const result = await Author.findByIdAndUpdate(id, { name, bio, birthDate, books }, { new: true });
+  res.status(200).json({ success: true, message: "Author Updated Successfully", data: result });
+
 }
 
 export const deleteAuthor = async (req: Request, res: Response, next: NextFunction) => {
@@ -71,13 +59,9 @@ export const deleteAuthor = async (req: Request, res: Response, next: NextFuncti
   if (!isValidId) {
     return res.status(400).json({ success: false, message: "Author id is not valid" });
   }
-  try {
-    const result = await Author.findByIdAndDelete(id);
-    if (!result) {
-      return res.status(404).json({ success: false, message: "Author Does not Exist" });
-    }
-    res.status(200).json({ success: true, message: "Author Deleted Successfully" });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Internal Sever Error" });
+  const result = await Author.findByIdAndDelete(id);
+  if (!result) {
+    return res.status(404).json({ success: false, message: "Author Does not Exist" });
   }
+  res.status(200).json({ success: true, message: "Author Deleted Successfully" });
 }
