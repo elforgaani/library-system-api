@@ -12,6 +12,7 @@ router.post(
   BookController.addBook
 );
 router.get("/", errorHandleMiddleware(BookController.getAllBooks));
+router.get('/filter-books', errorHandleMiddleware(BookController.filterBooks));
 router.get("/:id", errorHandleMiddleware(BookController.getBookById));
 router.put('/:id', errorHandleMiddleware(BookController.updateBook));
 router.delete(':/id', errorHandleMiddleware(BookController.deleteBook))

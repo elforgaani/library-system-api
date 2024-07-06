@@ -106,3 +106,9 @@ export const deleteBook = async (req: Request, res: Response, next: NextFunction
   res.status(200).json({ success: true, message: "Book Deleted Successfully" });
 
 }
+
+export const filterBooks = async (req: Request, res: Response, next: NextFunction) => {
+  const { author, title } = req.query;
+  const books = await Book.find({ title, author });
+  res.status(200).json({ success: true, data: books })
+}
