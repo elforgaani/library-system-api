@@ -6,6 +6,7 @@ import { addBookRequestBodyValidationSchema } from "../../utils/schemas.utils";
 const router = Router();
 
 router.post("/", validationMiddleware(addBookRequestBodyValidationSchema), errorHandleMiddleware(AuthorController.addAuthor));
+router.get('/filter-authors' , errorHandleMiddleware(AuthorController.filterAuthors))
 router.get('/', errorHandleMiddleware(AuthorController.getAllAuthors));
 router.get('/:id', errorHandleMiddleware(AuthorController.getAuthorById));
 router.put('/:id', errorHandleMiddleware(AuthorController.updateAuthor));

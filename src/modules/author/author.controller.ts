@@ -66,3 +66,9 @@ export const deleteAuthor = async (req: Request, res: Response, next: NextFuncti
   }
   res.status(200).json({ success: true, message: "Author Deleted Successfully" });
 }
+
+export const filterAuthors = async (req: Request, res: Response, next: NextFunction) => {
+  const { name, bio } = req.query;
+  const authors = await Author.find({ name, bio });
+  res.status(200).json({ success: true, data: authors });
+}
